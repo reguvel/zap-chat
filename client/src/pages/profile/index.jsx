@@ -113,7 +113,7 @@ const Profile = () => {
       if (response.status === 200) {
         setUserInfo({ ...userInfo, image: null });
         setImage(null);
-        toast.success("Image Deleted");
+        toast.success("Image removed successfully");
       }
     } catch (err) {
       console.log(err);
