@@ -26,19 +26,16 @@ const Profile = () => {
   const [selectedColor, setSelectedColor] = useState(0);
   const fileInputRef = useRef(null);
 
-  useEffect(
-    () => {
-      if (userInfo.profileSetup) {
-        setFirstName(userInfo.firstName);
-        setLastName(userInfo.lastName);
-        setSelectedColor(userInfo.color);
-      }
-      if (userInfo.image) {
-        setImage(`${HOST}/${userInfo.image}`);
-      }
-    },
-    [ userInfo ]
-  );
+  useEffect(() => {
+    if (userInfo.profileSetup) {
+      setFirstName(userInfo.firstName);
+      setLastName(userInfo.lastName);
+      setSelectedColor(userInfo.color);
+    }
+    if (userInfo.image) {
+      setImage(`${HOST}/${userInfo.image}`);
+    }
+  }, [userInfo]);
 
   const validateProfile = () => {
     if (!firstName) {
@@ -63,6 +60,7 @@ const Profile = () => {
         if (response.status === 200 && response.data) {
           setUserInfo({ ...response.data });
           toast.success("Profile Updated Successfully!");
+
           navigate("/chat");
         }
       } catch (err) {
@@ -87,21 +85,23 @@ const Profile = () => {
     const file = event.target.files[0];
     console.log({ file });
     if (file) {
+      //console.log("Yes file is there");
       const formData = new FormData();
       formData.append("profile-image", file);
       const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, {
         withCredentials: true,
       });
+      console.log("Hi" + response.data);
       if (response.status === 200 && response.data.image) {
         setUserInfo({ ...userInfo, image: response.data.image });
         setImage(`${HOST}/${response.data.image}`);
-        toast.success("Image Updated");
+        toast.success("Image updated successfully");
       }
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      // const reader = new FileReader();
+      // reader.onload = () => {
+      //   setImage(reader.result);
+      // };
+      // reader.readAsDataURL(file);
     }
   };
 
@@ -147,7 +147,7 @@ const Profile = () => {
                   )}`}
                 >
                   {firstName
-                    ? firstName.split("").shift()
+                    ? firstName.split("").shift() //shift()
                     : userInfo.email.split("").shift()}
                 </div>
               )}

@@ -1,3 +1,4 @@
+import ProfileInfo from "./components/profile-info";
 
 const ContactsContainer
  = () => {
@@ -18,6 +19,7 @@ const ContactsContainer
           {/* <NewDM /> */}
             </div>
         </div>
+        <ProfileInfo/>
     </div>
   )
 }

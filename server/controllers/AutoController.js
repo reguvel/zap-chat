@@ -139,6 +139,9 @@ export const addProfileImage = async (request, response, next) => {
       { image: fileName },
       { new: true, runValidators: true }
     );
+    console.log("Hello"+updatedUser);
+
+    
     return response.status(200).json({
       image: updatedUser.image,
     });
@@ -169,6 +172,16 @@ export const removeProfileImage = async (request, response, next) => {
     await user.save();
 
     return response.status(200).send("Profile Image removed successfully.");
+  } catch (err) {
+    console.error("Internal Server Error:", err);
+    return response.status(500).send("Internal Server Error");
+  }
+};
+
+export const logOut = async (request, response, next) => {
+  try {
+    response.cookie("jwt","",{maxAge:1, secure:true, sameSite: "None" });
+    return response.status(200).send("Logged Out");
   } catch (err) {
     console.error("Internal Server Error:", err);
     return response.status(500).send("Internal Server Error");
