@@ -28,20 +28,20 @@ export const SocketProvider = ({ children }) => {
         //setSocketInitialized(true);
       });
 
-    //   const handleReceiveMessage = (message) => {
-    //     const { selectedChatData, selectedChatType, addMessage } =
-    //       useAppStore.getState();
-    //     if (
-    //       selectedChatType !== undefined &&
-    //       (selectedChatData._id === message.sender._id ||
-    //         selectedChatData._id === message.recipient._id)
-    //     ) {
-    //       console.log("Message Received", message);
-    //       addMessage(message);
-    //     }
-    //   };
+      const handleReceiveMessage = (message) => {
+        const { selectedChatData, selectedChatType, addMessage } =
+          useAppStore.getState();
+        if (
+          selectedChatType !== undefined &&
+          (selectedChatData._id === message.sender._id ||
+            selectedChatData._id === message.recipient._id)
+        ) {
+          console.log("Message Received", message);
+          addMessage(message);
+        }
+      };
 
-    //   socket.current.on("receiveMessage", handleReceiveMessage);
+      socket.current.on("receiveMessage", handleReceiveMessage);
 
       return () => {
         socket.current.disconnect();
@@ -51,7 +51,7 @@ export const SocketProvider = ({ children }) => {
 
   return (
     <SocketContext.Provider
-      value={socket.current}
+      value={socket.current}//value={socketInitialized ? socketRef.current : null}
     >
       {children}
     </SocketContext.Provider>

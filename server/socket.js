@@ -1,5 +1,6 @@
 import { Server as SocketIoServer } from "socket.io";
-//import Message from "./models/MessagesModel.js";
+import Message from "./models/MessagesModel.js";
+
 const setupSocket=(server)=>{
     const io = new SocketIoServer(server, {
         cors: {
@@ -20,24 +21,24 @@ const setupSocket=(server)=>{
         }
       };
     
-    //   const sendMessage = async (message) => {
-    //     const senderSocketId = userSocketMap.get(message.sender);
-    //     const recipientSocketId = userSocketMap.get(message.recipient);
+      const sendMessage = async (message) => {
+        const senderSocketId = userSocketMap.get(message.sender);
+        const recipientSocketId = userSocketMap.get(message.recipient);
     
-    //     const createdMessage = await Message.create(message);
+        const createdMessage = await Message.create(message);
     
-    //     const messageData = await Message.findById(createdMessage._id)
-    //       .populate("sender", "id email firstName lastName image color")
-    //       .populate("recipient", "id email firstName lastName image color");
+        const messageData = await Message.findById(createdMessage._id)
+          .populate("sender", "id email firstName lastName image color")
+          .populate("recipient", "id email firstName lastName image color");
     
-    //     if (recipientSocketId) {
-    //       io.to(recipientSocketId).emit("receiveMessage", messageData);
-    //     }
+        if (recipientSocketId) {
+          io.to(recipientSocketId).emit("receiveMessage", messageData);
+        }
     
-    //     if (senderSocketId) {
-    //       io.to(senderSocketId).emit("receiveMessage", messageData);
-    //     }
-    //   };
+        if (senderSocketId) {
+          io.to(senderSocketId).emit("receiveMessage", messageData);
+        }
+      };
     
       io.on("connection", (socket) => {
         console.log("New client connected");
@@ -51,7 +52,7 @@ const setupSocket=(server)=>{
           console.log("User Id is not provided during connection.");
         }
     
-        // socket.on("sendMessage", sendMessage);
+        socket.on("sendMessage", sendMessage);
         socket.on("disconnect", () => disconnect(socket));
     
         // socket.on("error", (error) => {

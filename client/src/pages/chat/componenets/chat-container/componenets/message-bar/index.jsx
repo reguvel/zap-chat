@@ -4,12 +4,14 @@ import { useState, useRef, useEffect } from "react";
 import { GrAttachment } from "react-icons/gr";
 import { RiEmojiStickerLine } from "react-icons/ri";
 import { IoSend } from "react-icons/io5";
+import { useSocket } from "@/context/SocketContext";
+import { useAppStore } from "@/store";
 const MessageBar = () => {
+  const { selectedChatType, selectedChatData, userInfo } = useAppStore();
+  const socket = useSocket();
   const [message, setMessage] = useState("");
-
   const emojiRef = useRef();
   const [emojiPickerOpen, setEmojiPickerOpen] = useState(false);
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (emojiRef.current && !emojiRef.current.contains(event.target)) {
@@ -23,17 +25,17 @@ const MessageBar = () => {
   }, [emojiRef]);
 
   const handleSendMessage = async () => {
-    // console.log("Selected Chat Type:", selectedChatType);
-    // console.log("Socket:", socket);
-    // if (selectedChatType === "contact") {
-    //   socket.emit("sendMessage", {
-    //     sender: userInfo.id,
-    //     content: message,
-    //     recipient: selectedChatData._id,
-    //     messageType: "text",
-    //     fileUrl: undefined,
-    //   });
-    // }
+    console.log("Selected Chat Type:", selectedChatType);
+    console.log("Socket:", socket);
+    if (selectedChatType === "contact") {
+      socket.emit("sendMessage", {
+        sender: userInfo.id,
+        content: message,
+        recipient: selectedChatData._id,
+        messageType: "text",
+        fileUrl: undefined,
+      });
+    }
   };
   const handleAddEmoji = (emoji) => {
     setMessage((msg) => msg + emoji.emoji);
