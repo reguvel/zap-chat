@@ -147,8 +147,8 @@ const Profile = () => {
                   )}`}
                 >
                   {firstName
-                    ? firstName.split("").shift() //shift()
-                    : userInfo.email.split("").shift()}
+                    ? firstName.charAt(0)  //shift()
+                    : userInfo.email.charAt(0) }
                 </div>
               )}
             </Avatar>

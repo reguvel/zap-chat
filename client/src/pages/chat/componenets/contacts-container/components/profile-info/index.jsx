@@ -54,7 +54,7 @@ const ProfileInfo = () => {
               >
                 {userInfo.firstName
                   ? userInfo.firstName.split("").shift()
-                   : userInfo.userInfo.email.charAt(0)}
+                   : userInfo.email.split("").shift()}
               </div>
             )}
           </Avatar>
