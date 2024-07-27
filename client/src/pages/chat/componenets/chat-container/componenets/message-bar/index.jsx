@@ -9,7 +9,13 @@ import { useAppStore } from "@/store";
 import { UPLOAD_FILE_ROUTE } from "@/utils/constants";
 import { apiClient } from "@/lib/api-client";
 const MessageBar = () => {
-  const { selectedChatType, selectedChatData, userInfo } = useAppStore();
+  const {
+    selectedChatType,
+    selectedChatData,
+    userInfo,
+    setIsUploading,
+    setFileUploadProgress,
+  } = useAppStore();
   const fileInputRef = useRef();
   const socket = useSocket();
   const [message, setMessage] = useState("");
@@ -61,7 +67,7 @@ const MessageBar = () => {
         const response = await apiClient.post(UPLOAD_FILE_ROUTE, formData, {
           withCredentials: true,
           onUploadProgress: (data) => {
-            setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
+            //setFileUploadProgress(Math.round((100 * data.loaded) / data.total));
           },
         });
 

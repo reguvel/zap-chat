@@ -20,6 +20,9 @@ const MessageContainer = () => {
     setFileDownloadProgress,
   } = useAppStore();
 
+  const [showImage, setShowImage] = useState(false);
+  const [imageURL, setImageURL] = useState(null);
+
   useEffect(() => {
     const getMessages = async () => {
       try {
@@ -166,6 +169,33 @@ const MessageContainer = () => {
     <div className="flex-1 overflow-y-auto scrollbar-hidden p-4 px-8 md:w-[65vw] lg-[70vw] xl:w-[80vw] w-full">
       {renderMessages()}
       <div ref={scrollRef} />
+      {showImage && (
+        <div className="fixed z-[1000] top-0 left-0 h-[100vh] w-[100vw] flex items-center justify-center backdrop-blur-lg flex-col">
+          <div>
+            <img
+              src={`${HOST}/${imageURL}`}
+              className="h-[80vh] w-full bg-cover"
+            />
+            <div className="flex gap-5 fixed top-0 mt-5">
+              <button
+                className="cursor-pointer bg-black/20 p-3 text-2xl rounded-full hover:bg-[#111111] transition-all duration-300"
+                onClick={() => downloadFile(imageURL)}
+              >
+                <IoMdArrowRoundDown />
+              </button>
+              <button
+                className="cursor-pointer bg-black/20 p-3 text-2xl rounded-full hover:bg-[#111111] transition-all duration-300"
+                onClick={() => {
+                  setShowImage(false);
+                  setImageURL(null);
+                }}
+              >
+                <IoCloseSharp />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
