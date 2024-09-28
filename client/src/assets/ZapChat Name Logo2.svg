@@ -1,57 +1,4 @@
-import { useEffect } from "react";
-import NewDM from "./components/new-dm";
-import ProfileInfo from "./components/profile-info";
-import { GET_DM_CONTACTS_ROUTES } from "@/utils/constants";
-import { apiClient } from "@/lib/api-client";
-import { useAppStore } from "@/store";
-import ContactList from "@/components/ui/contact-list";
-
-const ContactsContainer = () => {
-  const { setDirectMessagesContacts, directMessagesContacts } = useAppStore();
-  useEffect(() => {
-    const getContacts = async () => {
-      const response = await apiClient.get(GET_DM_CONTACTS_ROUTES, {
-        withCredentials: true,
-      });
-      if (response.data.contacts) {
-        console.log(response.data.contacts);
-        setDirectMessagesContacts(response.data.contacts);
-      }
-    };
-    getContacts();
-  }, []);
-
-  return (
-    <div
-      className={`relative md:w-[35vw] lg:w-[30vw] xl:w-[20vw] bg-[#1b1c24] border-r-2 border-[#2f303b] w-full`}
-    >
-      <div className="pt-3">
-        <Logo />
-      </div>
-      <div className="my-5">
-        <div className="flex items-center justify-between pr-10">
-          <Title text="Direct Messages" />
-          <NewDM />
-        </div>
-      </div>
-      <div className="max-h-[38vh] overflow-y-auto scrollbar-hidden">
-        <ContactList contacts={directMessagesContacts} />
-      </div>
-      {/* <div className="my-5">
-        <div className="flex items-center justify-between pr-10">
-          <Title text="Channels" />
-       
-        </div>
-      </div> */}
-      <ProfileInfo />
-    </div>
-  );
-};
-
-const Logo = () => {
-  return (
-    <div className="flex p-3 justify-start items-center ">
-      <svg width="1450" height="50" viewBox="0 0 1450 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<svg width="1450" height="200" viewBox="0 0 1450 200" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g clip-path="url(#clip0_39_2)">
 <path d="M45.2018 45.2018L0 90.4036L48.8107 139.214L71.0543 116.256L45.2018 90.4036L90.4036 45.2018H45.2018Z" fill="white"/>
 <path d="M45.2018 45.2018L0 90.4036L48.8107 139.214L71.0543 116.256L45.2018 90.4036L90.4036 45.2018H45.2018Z" fill="url(#paint0_linear_39_2)"/>
@@ -96,16 +43,3 @@ const Logo = () => {
 </clipPath>
 </defs>
 </svg>
-
-    </div>
-  );
-};
-
-const Title = ({ text }) => {
-  return (
-    <h6 className="uppercase tracking-widest text-neutral-400 pl-10 font-light text-opacity-90 text-sm">
-      {text}
-    </h6>
-  );
-};
-export default ContactsContainer;
